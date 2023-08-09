@@ -2,24 +2,23 @@
 @page "/{*pageRoute}"
 @attribute [RenderModeServer(false)]
 @inject NavigationManager NavigationManager
-
+@implements IDisposable
 <PageTitle>Home</PageTitle>
 
 @ID.ToString()
-<h1>Home</h1>
-
-Welcome to your new app.
+<br />
+PageRoute: @PageRoute
 
 @code {
 
-	private int? ID { get; set; }
+	private int ID { get; set; } = 0;
 
 	[Parameter]
 	public string? PageRoute { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
-		Task.Delay(1);
+		await Task.Delay(1);
 		NavigationManager.LocationChanged += OnLocationChanged;
 	}
 
@@ -29,7 +28,7 @@ Welcome to your new app.
 		await InvokeAsync(StateHasChanged);
 	}
 
-	public new void Dispose()
+	public void Dispose()
 	{
 		NavigationManager.LocationChanged -= OnLocationChanged;
 	}
