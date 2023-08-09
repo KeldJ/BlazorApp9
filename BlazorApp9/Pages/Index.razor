@@ -1,0 +1,36 @@
+﻿
+@page "/{*pageRoute}"
+@attribute [RenderModeServer(false)]
+@inject NavigationManager NavigationManager
+
+<PageTitle>Home</PageTitle>
+
+@ID.ToString()
+<h1>Home</h1>
+
+Welcome to your new app.
+
+@code {
+
+	private int? ID { get; set; }
+
+	[Parameter]
+	public string? PageRoute { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		Task.Delay(1);
+		NavigationManager.LocationChanged += OnLocationChanged;
+	}
+
+	private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+	{
+		ID++;
+		await InvokeAsync(StateHasChanged);
+	}
+
+	public new void Dispose()
+	{
+		NavigationManager.LocationChanged -= OnLocationChanged;
+	}
+}
